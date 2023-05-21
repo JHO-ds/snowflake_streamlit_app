@@ -5,7 +5,7 @@ import snowflake.connector
 from urllib.error import URLError 
 
 
-defe get_fruit_data(fruit: str) -> json:
+def get_fruit_data(fruit: str) -> json:
   fruityvice_response = requests.get(f"https://fruityvice.com/api/fruit/{fruit}")
   fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
   return fruityvice_normalized
@@ -14,6 +14,11 @@ def get_fruit_load_list(my_cnx) -> list:
   with my_cnx.cursor() as my_cur:
     my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
     return my_cur.fetchall()
+  
+def insert_row_snowflake(new_fruit: str) -> str:
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute(f"insert into pc_rivery_db.public.fruit_load_list values ('{new_fruit}')")
+    return f"Thanks for adding {new_fruit}"
 
 
 # get data from S3
@@ -63,6 +68,9 @@ my_cleaned_data = [elem[0] for elem in my_data_rows]
 add_my_fruit = streamlit.multiselect('What fruit would you like to add?', my_cleaned_data, default = ['banana'])
 streamlit.text(f"Thanks for adding {', '.join(add_my_fruit)}")
 
-
-
-
+add_my_fruit = steamlit.text_input('What fruit would you like to add?')
+if streamlit.button('Add a Fruit to the List'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  insert_status = insert_row_snowflake(add_my_fruit)
+  my_cnx.cloase()
+  streamlist.text(insert_status)
