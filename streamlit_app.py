@@ -69,7 +69,7 @@ my_cleaned_data = [elem[0] for elem in my_data_rows]
 add_my_fruit = streamlit.multiselect('What fruit would you like to add?', my_cleaned_data, default = ['banana'])
 streamlit.text(f"Thanks for adding {', '.join(add_my_fruit)}")
 
-add_my_fruit = steamlit.text_input('What fruit would you like to add?')
+add_my_fruit = streamlit.text_input('What fruit would you like to add?')
 if streamlit.button('Add a Fruit to the List'):
   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
   insert_status = insert_row_snowflake(add_my_fruit)
