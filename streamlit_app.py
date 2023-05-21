@@ -2,7 +2,7 @@ import streamlit
 import pandas as pd
 import requests
 import snowflake.connector
-from irllib.error import URLError 
+from urllib.error import URLError 
 
 # get data from S3
 my_fruit_list_s3_url = r"https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt"
